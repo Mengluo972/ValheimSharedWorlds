@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.2
+
+- 模组主页链接（website_url）指向源码仓库 [ValheimSharedWorlds](https://github.com/Mengluo972/ValheimSharedWorlds)，源码已同步开源。功能与 1.0.1 相同。
+
 ## 1.0.1
 
 首个公开发布版本（1.0.0 提交时版本号被平台风控流程占用，顺延为 1.0.1）。
