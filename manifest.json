@@ -1,0 +1,9 @@
+{
+  "name": "ValheimSaveShare",
+  "version_number": "1.0.1",
+  "website_url": "https://github.com/Mengluo972/ValheimSharedWorlds",
+  "description": "通过 GitHub 分享 Valheim 世界：新增共享存档页签（粘贴链接下载，带进度）与共享按钮一键上传，支持 Steam 云存档、私有仓库与代理。Share Valheim worlds via GitHub: upload & download world saves with progress. Steam cloud & proxy supported.",
+  "dependencies": [
+    "denikson-BepInExPack_Valheim-5.4.2350"
+  ]
+}
