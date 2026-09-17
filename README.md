@@ -27,7 +27,7 @@ PathPrefix = worlds
 
 3. 把 token 填进 `%AppData%\ValheimSaveShare\token.dat`（资源管理器地址栏粘贴该路径即可打开；首次运行游戏会自动生成带说明的模板文件）：github.com → Settings → Developer settings → Fine-grained tokens → Generate，只勾选该仓库的 **Contents: Read and write**，把 `github_pat_` 开头的字符串粘贴到说明下方单独一行保存。
 
-**Token 存放位置 / Token storage**：token 存放在 `%AppData%\ValheimSaveShare\token.dat`，**不在 cfg 里**——Thunderstore 审核要求秘密不得放在 config 目录（r2modman 的配置同步/分享会把 config 带出去）。想换 token 直接覆盖文件里的 token 行；想作废 token 到 GitHub token 管理页 Revoke。
+**Token 存放位置 / Token storage**：token 存放在 `%AppData%\ValheimSaveShare\token.dat`，不在 cfg 里。想换 token 直接覆盖文件里的 token 行；想作废 token 到 GitHub token 管理页 Revoke。
 
 已共享的存档记录（世界名 → 链接）保存在 `BepInEx/config/ValheimSaveShare.shared.json`。
 
@@ -46,7 +46,7 @@ PathPrefix = worlds
 - 游戏扫描器会删除不成组的存档文件，因此本 mod 总是整组上传/下载 `.fwl2/.db2/.ok/.chunks/.chunk`；手动搬运时也请整组复制。
 - 打包后超过 90 MB 时上传会被拒绝（GitHub Contents API 100 MB 限制），后续版本考虑改走 Release Assets。
 - 第三个页签基于原版控件克隆，手柄对列表行的导航暂未适配（页签左右切换、按钮点击正常），欢迎反馈。
-- Token 保存在 `%AppData%\ValheimSaveShare\token.dat`（不随 r2modman 配置同步，cfg 中无 Token 字段）；请勿把 token 本身分享给他人。
+- Token 保存在 `%AppData%\ValheimSaveShare\token.dat`（cfg 中无 Token 字段）；请勿把 token 本身分享给他人。
 
 ## 构建 / Build
 

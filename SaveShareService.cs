@@ -357,13 +357,11 @@ namespace ValheimSaveShare
                     L("上传需要 Token。请打开文件：%AppData%\\ValheimSaveShare\\token.dat\n" +
                       "（资源管理器地址栏直接粘贴上面路径即可打开；首次运行游戏时已自动生成带说明的模板）\n" +
                       "按文件内说明生成 Fine-grained token（只勾选你共享仓库的 Contents: Read and write），\n" +
-                      "粘贴到说明下方单独一行并保存，然后重试上传（无需重启游戏）。\n" +
-                      "Token 不存放在 cfg，避免被配置同步功能带出。",
+                      "粘贴到说明下方单独一行并保存，然后重试上传（无需重启游戏）。",
                       "A token is required. Open the file: %AppData%\\ValheimSaveShare\\token.dat\n" +
                       "(paste the path into Explorer's address bar; a commented template is created on first launch)\n" +
                       "Create a fine-grained PAT per the instructions inside (Contents: Read and write on your\n" +
-                      "share repo only), paste it on its own line below the block, save, then retry (no restart needed).\n" +
-                      "Tokens are never stored in the config folder, so profile sync can't leak them."));
+                      "share repo only), paste it on its own line below the block, save, then retry (no restart needed)."));
                 return;
             }
 

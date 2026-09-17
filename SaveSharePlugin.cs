@@ -43,9 +43,8 @@ namespace ValheimSaveShare
                 "可选 HTTP 代理，例如 http://127.0.0.1:7890（Clash/SingBox 等本地代理端口）。留空 = 直连。\n" +
                 "直连 api.github.com 困难或上传/下载卡住时，请填写你的本地代理端口。\n" +
                 "Optional HTTP proxy for GitHub access, e.g. http://127.0.0.1:7890. Empty = direct.\n" +
-                "GitHub Token 不在本 cfg：存放在 %AppData%\\ValheimSaveShare\\token.dat\n" +
-                "(GitHub Token is NOT stored in this cfg; it lives in %AppData%\\ValheimSaveShare\\token.dat\n" +
-                "so profile sync/share can never leak it. See that file for setup instructions.)");
+                "GitHub Token 存放在 %AppData%\\ValheimSaveShare\\token.dat，不在本 cfg。\n" +
+                "(GitHub Token lives in %AppData%\\ValheimSaveShare\\token.dat, not in this cfg.)");
             Config.Save();
             // Token 不落 config（Thunderstore 审核要求）：首次运行在 %AppData% 下生成带说明的 token.dat
             TokenStore.EnsureTemplate();

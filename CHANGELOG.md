@@ -4,16 +4,16 @@
 
 彻底移除 cfg 中的 Token 配置字段（1.0.3 曾以 cfg 作为一次性输入口并自动迁移，因模组尚未成功发布，直接简化为纯文件方案，无迁移逻辑）。
 
-- GitHub Token 只存放在 `%AppData%\ValheimSaveShare\token.dat`，cfg 中不再有任何 Token 字段（Thunderstore 审核要求：秘密不得存放在会被 profile 同步/分享带出的 config 目录）。
+- GitHub Token 只存放在 `%AppData%\ValheimSaveShare\token.dat`，cfg 中不再有任何 Token 字段。
 - 首次运行自动在 `%AppData%\ValheimSaveShare\` 生成带生成教程的 token.dat 模板；粘贴 token 保存后立即生效，无需重启游戏。
 - 游戏内"尚未配置 Token / Token 权限错误"提示改为直接给出 token.dat 的完整路径。
 - manifest 包描述补充 Token 存储安全说明。
 
 ## 1.0.3
 
-GitHub Token 不再存放在 BepInEx config 目录（Thunderstore 审核要求：profile 同步/分享会把 config 一起带出，token 有泄露风险）。
+GitHub Token 不再存放在 BepInEx config 目录，改用独立文件保存。
 
-- Token 实际存放位置改为 `%AppData%\ValheimSaveShare\token.dat`，不随 r2modman 配置同步/分享外泄。
+- Token 实际存放位置改为 `%AppData%\ValheimSaveShare\token.dat`。
 - cfg 里的 `[GitHub] Token` 保留为一次性输入入口：粘贴 token 后重启游戏，自动移入 token.dat 并把 cfg 中该行清空；老用户升级后首次启动也会自动完成迁移，无需重新配置。
 - 更新 cfg 描述、游戏内提示与 README 的 token 配置说明，明确 token 的存放路径与更换方式。
 

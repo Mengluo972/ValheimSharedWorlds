@@ -66,7 +66,7 @@ namespace ValheimSaveShare
                     "  Permissions → Repository permissions → Contents 设为 Read and write（其余保持 No access）；\n" +
                     "  Generate 后复制 github_pat_ 开头的完整字符串，粘贴到本说明下方单独一行，保存文件即可（无需重启）。\n" +
                     "换 token：直接覆盖粘贴；作废 token：到 GitHub token 管理页 Revoke。\n" +
-                    "本文件在 %AppData% 下，不会被 r2modman 的配置同步/分享带出，请勿主动分享给他人。\n" +
+                    "本文件在 %AppData% 下，请勿分享给他人。\n" +
                     "Paste your GitHub Personal Access Token on its own line below this block.\n",
                     Encoding.UTF8);
             }
