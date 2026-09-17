@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.0.5
+
+GitHub Token 不再存放在 BepInEx config 目录，改用独立文件保存。
+
+- Token 存放在 `%AppData%\ValheimSaveShare\token.dat`，cfg 中不再有任何 Token 字段。
+- 首次运行自动在 `%AppData%\ValheimSaveShare\` 生成带生成教程的 token.dat 模板；粘贴 token 保存后立即生效，无需重启游戏。
+- 游戏内"尚未配置 Token / Token 权限错误"提示直接给出 token.dat 的完整路径。
+- 包描述与 README 更新 Token 存储说明。
+
 ## 1.0.4
 
 彻底移除 cfg 中的 Token 配置字段（1.0.3 曾以 cfg 作为一次性输入口并自动迁移，因模组尚未成功发布，直接简化为纯文件方案，无迁移逻辑）。

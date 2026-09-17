@@ -1,6 +1,6 @@
 {
   "name": "ValheimSaveShare",
-  "version_number": "1.0.4",
+  "version_number": "1.0.5",
   "website_url": "https://github.com/Mengluo972/ValheimSharedWorlds",
   "description": "通过 GitHub 分享 Valheim 世界：共享存档页签一键下载，共享按钮一键上传，支持 Steam 云存档、私有仓库与代理；GitHub Token 存放于 %AppData%ValheimSaveShare。Share Valheim worlds via GitHub: upload & download saves with progress. Token stored in %AppData%.",
   "dependencies": [
