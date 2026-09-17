@@ -13,7 +13,7 @@ namespace ValheimSaveShare
     {
         public const string PluginGuid = "SuperVikingDepartment.ValheimSaveShare";
         public const string PluginName = "ValheimSaveShare";
-        public const string PluginVersion = "1.0.2";
+        public const string PluginVersion = "1.0.3";
 
         internal static ManualLogSource Log;
         internal static SaveSharePlugin Instance;
@@ -40,6 +40,8 @@ namespace ValheimSaveShare
                 "上传目标分支。留空则自动使用仓库默认分支。Target branch; empty = repo default branch.");
             ConfigToken = Config.Bind("GitHub", "Token", "",
                 "GitHub Personal Access Token —— 上传共享存档必需；下载公开仓库不需要。\n" +
+                "在这里粘贴 token 后，下次启动会自动移入 %AppData%\\ValheimSaveShare\\token.dat 并把本项清空\n" +
+                "（Thunderstore 要求：token 不得存放在 config 目录，否则会被 r2modman 的配置同步/分享功能带出去）。\n" +
                 "生成教程（Fine-grained token，权限最小化）：\n" +
                 "  1. 登录 github.com，点右上角头像 → Settings（设置）；\n" +
                 "  2. 左侧栏最底部 → Developer settings（开发者设置）；\n" +
@@ -48,8 +50,10 @@ namespace ValheimSaveShare
                 "  5. Resource owner 选你自己；Repository access 选 Only select repositories，勾选你的共享仓库（即上面 Repo 填的那个）；\n" +
                 "  6. 展开 Permissions → Repository permissions → Contents，设为 Read and write（其余权限保持 No access）；\n" +
                 "  7. 点 Generate token，复制生成的 github_pat_ 开头的完整字符串，粘贴到本项 Token = 后面。\n" +
-                "安全提示：Token 等同于该仓库的写权限，请勿泄露或把本 cfg 发给别人；若怀疑泄露，到 token 管理页 Revoke（撤销）即可作废。\n" +
-                "GitHub PAT used for uploading shared saves. Follow the steps above. Do NOT share this file.");
+                "换 token：把新 token 粘贴到本项再启动一次即可；作废旧 token：到 GitHub token 管理页 Revoke。\n" +
+                "GitHub PAT used for uploading shared saves. Pasted here once, then auto-moved to\n" +
+                "%AppData%\\ValheimSaveShare\\token.dat (Thunderstore rule: secrets must not live in the config\n" +
+                "folder, which r2modman may sync/share).");
             ConfigPathPrefix = Config.Bind("GitHub", "PathPrefix", "worlds",
                 "仓库内存放共享存档的根目录。Repo folder that holds shared saves.");
             ConfigProxy = Config.Bind("GitHub", "Proxy", "",
@@ -57,6 +61,9 @@ namespace ValheimSaveShare
                 "直连 api.github.com 困难或上传/下载卡住时，请填写你的本地代理端口。\n" +
                 "Optional HTTP proxy for GitHub access, e.g. http://127.0.0.1:7890. Empty = direct.");
             Config.Save();
+            // Token 不落 config：用户粘进 cfg 的 token 迁移到 %AppData% 后立即把 cfg 清空，
+            // 迁移动作要在 Config.Save() 之后（否则 Config.Save 又会把旧值写回去）
+            TokenStore.MigrateFromConfig(ConfigToken);
 
             new Harmony(PluginGuid).PatchAll(typeof(FejdStartupSetupGuiPatch));
             SharedSaveRegistry.Load();

@@ -17,15 +17,17 @@ Share Valheim worlds between friends via your own GitHub repository.
 
 1. 在 [github.com/new](https://github.com/new) 新建一个空仓库（如 `valheim-shared-worlds`，公开或私有均可）。
 2. 生成 **fine-grained Personal Access Token**：GitHub → Settings → Developer settings → Fine-grained tokens → Generate，只勾选该仓库的 **Contents: Read and write**。
-3. 编辑 `BepInEx/config/SuperVikingDepartment.ValheimSaveShare.cfg`：
+3. 编辑 `BepInEx/config/SuperVikingDepartment.ValheimSaveShare.cfg`，把 token 粘贴到 `[GitHub] Token`：
 
 ```ini
 [GitHub]
 Repo = 你的用户名/valheim-shared-worlds
 Branch =            ; 留空自动用默认分支
-Token = github_pat_xxxx   ; 上传必需，勿泄露
+Token = github_pat_xxxx   ; 粘贴到这里，下次启动自动移入 token.dat 并清空本行
 PathPrefix = worlds
 ```
+
+**Token 存放位置 / Token storage**：token 不会留在 cfg 里（Thunderstore 审核要求，防止配置同步把 token 带出去）。粘贴进 cfg 后重启游戏，token 自动移入 `%AppData%\ValheimSaveShare\token.dat`，cfg 中该行被清空。想换 token 就把新的粘贴进 cfg 再重启一次；想作废 token 到 GitHub token 管理页 Revoke。
 
 已共享的存档记录（世界名 → 链接）保存在 `BepInEx/config/ValheimSaveShare.shared.json`。
 
@@ -44,7 +46,7 @@ PathPrefix = worlds
 - 游戏扫描器会删除不成组的存档文件，因此本 mod 总是整组上传/下载 `.fwl2/.db2/.ok/.chunks/.chunk`；手动搬运时也请整组复制。
 - 打包后超过 90 MB 时上传会被拒绝（GitHub Contents API 100 MB 限制），后续版本考虑改走 Release Assets。
 - 第三个页签基于原版控件克隆，手柄对列表行的导航暂未适配（页签左右切换、按钮点击正常），欢迎反馈。
-- Token 只保存在你本地 cfg 文件里，请勿把 cfg 分享给他人。
+- Token 保存在 `%AppData%\ValheimSaveShare\token.dat`（不随 r2modman 配置同步），cfg 中只作为一次性输入入口、粘贴重启后自动清空；请勿把 token 本身分享给他人。
 
 ## 构建 / Build
 

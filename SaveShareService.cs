@@ -21,7 +21,7 @@ namespace ValheimSaveShare
         private static GitHubClient _gh;
 
         private static GitHubClient GH => _gh ??= new GitHubClient(
-            SaveSharePlugin.ConfigToken.Value, SaveSharePlugin.ConfigProxy.Value?.Trim());
+            TokenStore.Load(), SaveSharePlugin.ConfigProxy.Value?.Trim());
 
         // 进度弹窗共享状态（后台线程写、主线程每帧读）
         private static volatile string _status = "";
@@ -337,7 +337,7 @@ namespace ValheimSaveShare
             }
 
             string repoCfg = SaveSharePlugin.ConfigRepo.Value?.Trim() ?? "";
-            string token = SaveSharePlugin.ConfigToken.Value?.Trim() ?? "";
+            string token = TokenStore.Load();
             var repoParts = repoCfg.Split('/');
             if (string.IsNullOrEmpty(repoCfg) || repoParts.Length != 2 || string.IsNullOrEmpty(repoParts[0]) || string.IsNullOrEmpty(repoParts[1]))
             {
@@ -354,11 +354,15 @@ namespace ValheimSaveShare
             {
                 Warn(L("尚未配置 GitHub Token", "GitHub token not configured"),
                     L("上传需要 Token：github.com → Settings → Developer settings → Fine-grained tokens，\n" +
-                      "只勾选你的共享仓库的 Contents: Read and write，然后把 token 填入\n" +
-                      "BepInEx/config/SuperVikingDepartment.ValheimSaveShare.cfg 的 [GitHub] Token。",
+                      "只勾选你的共享仓库的 Contents: Read and write，然后把 token 粘贴到\n" +
+                      "BepInEx/config/SuperVikingDepartment.ValheimSaveShare.cfg 的 [GitHub] Token，再启动一次游戏；\n" +
+                      "token 会自动移入 %AppData%\\ValheimSaveShare\\token.dat 并从 cfg 中清空。\n" +
+                      "（token 不再直接存放在 cfg，避免被配置同步功能带出）",
                       "Create a fine-grained PAT (github.com → Settings → Developer settings), grant\n" +
-                      "Contents: Read and write on your share repo only, then fill [GitHub] Token in\n" +
-                      "BepInEx/config/SuperVikingDepartment.ValheimSaveShare.cfg."));
+                      "Contents: Read and write on your share repo only, paste it into [GitHub] Token in\n" +
+                      "BepInEx/config/SuperVikingDepartment.ValheimSaveShare.cfg and restart the game;\n" +
+                      "it will be moved to %AppData%\\ValheimSaveShare\\token.dat and cleared from the cfg.\n" +
+                      "(Tokens are never stored in the config folder, so profile sync can't leak them.)"));
                 return;
             }
 
@@ -724,16 +728,24 @@ namespace ValheimSaveShare
         internal static void ShowError(string title, Exception e)
         {
             string msg = e is UserException || e is GitHubException ? e.Message : e.ToString();
-            if (e is GitHubException gh && gh.Status == System.Net.HttpStatusCode.Forbidden &&
+            if (e is GitHubException gh401 && gh401.Status == System.Net.HttpStatusCode.Unauthorized)
+            {
+                msg += "\n\n" + L(
+                    "提示：GitHub 拒绝了 Token（无效或已过期）。请到 GitHub → Settings → Developer settings →\n" +
+                    "Fine-grained tokens 检查/重新生成，并按模组的 Token 配置说明重新填写。",
+                    "Hint: GitHub rejected the token (invalid or expired). Regenerate it under Settings →\n" +
+                    "Developer settings → Fine-grained tokens and re-enter it per the mod's token instructions.");
+            }
+            else if (e is GitHubException gh403 && gh403.Status == System.Net.HttpStatusCode.Forbidden &&
                 msg != null && msg.Contains("not accessible"))
             {
                 msg += "\n\n" + L(
                     "提示：这是 Token 权限问题。请到 GitHub → Settings → Developer settings → 你的 fine-grained token，\n" +
                     "确认 Repository access 勾选了共享仓库、且 Permissions → Contents = Read and write\n" +
-                    "（经典 token 则需要勾选 repo 整个 scope），保存后把新 token 填入 cfg 再试。",
+                    "（经典 token 则需要勾选 repo 整个 scope），保存后把新 token 粘贴到 cfg 的 [GitHub] Token，再启动一次游戏。",
                     "Hint: token permission issue. Edit your fine-grained token: select the share repo under\n" +
                     "Repository access and set Permissions → Contents = Read and write (classic tokens need the\n" +
-                    "repo scope), then paste the new token into the cfg and retry.");
+                    "repo scope), then paste the new token into [GitHub] Token in the cfg and restart the game.");
             }
             SaveSharePlugin.Log.LogError(title + ": " + e);
             Warn(title, msg);

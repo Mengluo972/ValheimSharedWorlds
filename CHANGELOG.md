@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.3
+
+GitHub Token 不再存放在 BepInEx config 目录（Thunderstore 审核要求：profile 同步/分享会把 config 一起带出，token 有泄露风险）。
+
+- Token 实际存放位置改为 `%AppData%\ValheimSaveShare\token.dat`，不随 r2modman 配置同步/分享外泄。
+- cfg 里的 `[GitHub] Token` 保留为一次性输入入口：粘贴 token 后重启游戏，自动移入 token.dat 并把 cfg 中该行清空；老用户升级后首次启动也会自动完成迁移，无需重新配置。
+- 更新 cfg 描述、游戏内提示与 README 的 token 配置说明，明确 token 的存放路径与更换方式。
+
 ## 1.0.2
 
 - 模组主页链接（website_url）指向源码仓库 [ValheimSharedWorlds](https://github.com/Mengluo972/ValheimSharedWorlds)，源码已同步开源。功能与 1.0.1 相同。
