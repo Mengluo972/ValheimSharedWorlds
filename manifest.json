@@ -1,8 +1,8 @@
 {
   "name": "ValheimSaveShare",
-  "version_number": "1.0.3",
+  "version_number": "1.0.4",
   "website_url": "https://github.com/Mengluo972/ValheimSharedWorlds",
-  "description": "通过 GitHub 分享 Valheim 世界：新增共享存档页签（粘贴链接下载，带进度）与共享按钮一键上传，支持 Steam 云存档、私有仓库与代理。Share Valheim worlds via GitHub: upload & download world saves with progress. Steam cloud & proxy supported.",
+  "description": "通过 GitHub 分享 Valheim 世界：共享存档页签一键下载，共享按钮一键上传，支持 Steam 云存档、私有仓库与代理。Token 存放于 %AppData%，绝不随配置同步外泄。Share Valheim worlds via GitHub: upload & download saves with progress. Token lives in %AppData%, never in the synced config folder.",
   "dependencies": [
     "denikson-BepInExPack_Valheim-5.4.2350"
   ]

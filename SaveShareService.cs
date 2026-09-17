@@ -337,32 +337,33 @@ namespace ValheimSaveShare
             }
 
             string repoCfg = SaveSharePlugin.ConfigRepo.Value?.Trim() ?? "";
-            string token = TokenStore.Load();
+            string token = TokenStore.LoadUserToken();
             var repoParts = repoCfg.Split('/');
             if (string.IsNullOrEmpty(repoCfg) || repoParts.Length != 2 || string.IsNullOrEmpty(repoParts[0]) || string.IsNullOrEmpty(repoParts[1]))
             {
                 Warn(L("尚未配置 GitHub 仓库", "GitHub repo not configured"),
                     L("上传需要先在 BepInEx/config/SuperVikingDepartment.ValheimSaveShare.cfg 中配置：\n" +
                       "[GitHub] Repo = 你的用户名/仓库名（没有就先去 github.com 新建一个空仓库）\n" +
-                      "[GitHub] Token = 你的 Personal Access Token（需要该仓库 Contents 读写权限）",
+                      "并在 %AppData%\\ValheimSaveShare\\token.dat 里填入你的 Personal Access Token（需该仓库 Contents 读写权限）",
                       "Configure in BepInEx/config/SuperVikingDepartment.ValheimSaveShare.cfg:\n" +
                       "[GitHub] Repo = yourname/your-repo (create an empty repo on github.com first)\n" +
-                      "[GitHub] Token = your Personal Access Token (Contents read/write for that repo)"));
+                      "and put your Personal Access Token (Contents read/write for that repo) in\n" +
+                      "%AppData%\\ValheimSaveShare\\token.dat"));
                 return;
             }
             if (string.IsNullOrEmpty(token))
             {
                 Warn(L("尚未配置 GitHub Token", "GitHub token not configured"),
-                    L("上传需要 Token：github.com → Settings → Developer settings → Fine-grained tokens，\n" +
-                      "只勾选你的共享仓库的 Contents: Read and write，然后把 token 粘贴到\n" +
-                      "BepInEx/config/SuperVikingDepartment.ValheimSaveShare.cfg 的 [GitHub] Token，再启动一次游戏；\n" +
-                      "token 会自动移入 %AppData%\\ValheimSaveShare\\token.dat 并从 cfg 中清空。\n" +
-                      "（token 不再直接存放在 cfg，避免被配置同步功能带出）",
-                      "Create a fine-grained PAT (github.com → Settings → Developer settings), grant\n" +
-                      "Contents: Read and write on your share repo only, paste it into [GitHub] Token in\n" +
-                      "BepInEx/config/SuperVikingDepartment.ValheimSaveShare.cfg and restart the game;\n" +
-                      "it will be moved to %AppData%\\ValheimSaveShare\\token.dat and cleared from the cfg.\n" +
-                      "(Tokens are never stored in the config folder, so profile sync can't leak them.)"));
+                    L("上传需要 Token。请打开文件：%AppData%\\ValheimSaveShare\\token.dat\n" +
+                      "（资源管理器地址栏直接粘贴上面路径即可打开；首次运行游戏时已自动生成带说明的模板）\n" +
+                      "按文件内说明生成 Fine-grained token（只勾选你共享仓库的 Contents: Read and write），\n" +
+                      "粘贴到说明下方单独一行并保存，然后重试上传（无需重启游戏）。\n" +
+                      "Token 不存放在 cfg，避免被配置同步功能带出。",
+                      "A token is required. Open the file: %AppData%\\ValheimSaveShare\\token.dat\n" +
+                      "(paste the path into Explorer's address bar; a commented template is created on first launch)\n" +
+                      "Create a fine-grained PAT per the instructions inside (Contents: Read and write on your\n" +
+                      "share repo only), paste it on its own line below the block, save, then retry (no restart needed).\n" +
+                      "Tokens are never stored in the config folder, so profile sync can't leak them."));
                 return;
             }
 
@@ -742,10 +743,12 @@ namespace ValheimSaveShare
                 msg += "\n\n" + L(
                     "提示：这是 Token 权限问题。请到 GitHub → Settings → Developer settings → 你的 fine-grained token，\n" +
                     "确认 Repository access 勾选了共享仓库、且 Permissions → Contents = Read and write\n" +
-                    "（经典 token 则需要勾选 repo 整个 scope），保存后把新 token 粘贴到 cfg 的 [GitHub] Token，再启动一次游戏。",
+                    "（经典 token 则需要勾选 repo 整个 scope），生成新 token 粘贴到\n" +
+                    "%AppData%\\ValheimSaveShare\\token.dat（覆盖原 token 行）后再试。",
                     "Hint: token permission issue. Edit your fine-grained token: select the share repo under\n" +
                     "Repository access and set Permissions → Contents = Read and write (classic tokens need the\n" +
-                    "repo scope), then paste the new token into [GitHub] Token in the cfg and restart the game.");
+                    "repo scope), then generate a new token and paste it into\n" +
+                    "%AppData%\\ValheimSaveShare\\token.dat (replacing the old token line).");
             }
             SaveSharePlugin.Log.LogError(title + ": " + e);
             Warn(title, msg);
