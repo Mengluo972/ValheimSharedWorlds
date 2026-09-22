@@ -13,7 +13,7 @@ namespace ValheimSaveShare
     {
         public const string PluginGuid = "SuperVikingDepartment.ValheimSaveShare";
         public const string PluginName = "ValheimSaveShare";
-        public const string PluginVersion = "1.0.5";
+        public const string PluginVersion = "1.0.6";
 
         internal static ManualLogSource Log;
         internal static SaveSharePlugin Instance;

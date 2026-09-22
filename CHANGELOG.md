@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.0.6
+
+文档与备用上传脚本修正，模组功能本身无变化。
+
+- README 删掉「功能」列表中一行误留的占位文字「（见下）」，此前它会原样显示在模组页面上。
+- 修正 `manual-upload.bat`（不依赖游戏内上传的备用批处理）：Token 改从 `%AppData%\ValheimSaveShare\token.dat` 读取，与模组自身保持一致；此前它仍从 cfg 找 Token 字段，而该字段自 1.0.3 起已移除，导致脚本取不到 Token 直接退出。
+- 修正 `manual-upload.bat` 无法运行的问题：移除文件开头的 UTF-8 BOM（会让 `@echo off` 失效）、行尾统一为 CRLF、编码改为 GBK 并去掉 `chcp 65001`。
+- 修正 `manual-upload.bat` 中 `if ... set ... & goto label` 的写法（`&` 会无条件执行 `goto`，导致条件判断失效、去空格可能死循环），改为显式标签跳转。
+- `manual-upload.bat` 读不到 Token 时的提示改为给出 token.dat 的实际路径（原文案指向已废弃的 cfg 字段）。
+
 ## 1.0.5
 
 GitHub Token 不再存放在 BepInEx config 目录，改用独立文件保存。

@@ -1,17 +1,16 @@
-ï»¿@echo off
+@echo off
 rem ============================================================
-rem  Valheim æ‰‹åŠ¨å…±äº«å­˜æ¡£æ‰¹å¤„ç†ï¼ˆä¸ä¾èµ–æ¸¸æˆå†…ä¸Šä¼ ï¼‰
-rem  ç”¨æ³•ï¼šæŠŠæœ¬æ–‡ä»¶æ”¾åˆ°ä»»æ„ä½ç½®åŒå‡»è¿è¡Œï¼ŒæŒ‰æç¤ºæ“ä½œã€‚
-rem  å‰æï¼šWindows 10/11 è‡ªå¸¦çš„ curlï¼Œæ— éœ€å®‰è£…ä»»ä½•ä¸œè¥¿ã€‚
-rem  è¯´æ˜Žï¼šæœ¬è„šæœ¬ç›´æŽ¥è¯»å–æ¸¸æˆç›®å½•ä¸‹çš„ ValheimSaveShare é…ç½®
-rem        ï¼ˆRepo / Branch / Token / PathPrefixï¼‰ï¼Œæ¯æ¬¡è¿è¡Œéƒ½
-rem        é‡æ–°è¯»æ–‡ä»¶ï¼Œæ”¹å®Œ cfg ç«‹å³ç”Ÿæ•ˆï¼Œæ— éœ€é‡å¯æ¸¸æˆã€‚
+rem  Valheim ÊÖ¶¯¹²Ïí´æµµÅú´¦Àí£¨²»ÒÀÀµÓÎÏ·ÄÚÉÏ´«£©
+rem  ÓÃ·¨£º°Ñ±¾ÎÄ¼þ·Åµ½ÓÎÏ·¸ùÄ¿Â¼£¨»ò×ÓÄ¿Â¼£©Ë«»÷ÔËÐÐ£¬°´ÌáÊ¾²Ù×÷¡£
+rem  Ç°Ìá£ºWindows 10/11 ×Ô´øµÄ curl Óë PowerShell£¬ÎÞÐè°²×°ÈÎºÎ¶«Î÷¡£
+rem  ËµÃ÷£ºRepo / Branch / PathPrefix ¶ÁÈ¡ BepInEx\config ÏÂµÄÄ£×é cfg£¬
+rem        Token ¶ÁÈ¡ %AppData%\ValheimSaveShare\token.dat£¨ÓëÓÎÏ·ÄÚÄ£×éÍ¬Ò»À´Ô´£©£»
+rem        Ã¿´ÎÔËÐÐ¶¼ÖØÐÂ¶ÁÎÄ¼þ£¬¸ÄÍêÁ¢¼´ÉúÐ§£¬ÎÞÐèÖØÆôÓÎÏ·¡£
 rem ============================================================
 setlocal enabledelayedexpansion
-chcp 65001 >nul
-title Valheim æ‰‹åŠ¨å…±äº«å­˜æ¡£
+title Valheim ÊÖ¶¯¹²Ïí´æµµ
 
-rem ---- å®šä½æ¸¸æˆç›®å½•ï¼ˆæœ¬è„šæœ¬å‡å®šæ”¾åœ¨æ¸¸æˆæ ¹ç›®å½•æˆ–å…¶å­ç›®å½•è¿è¡Œï¼‰ ----
+rem ---- ¶¨Î»ÓÎÏ·Ä¿Â¼£¨±¾½Å±¾¼Ù¶¨·ÅÔÚÓÎÏ·¸ùÄ¿Â¼»òÆä×ÓÄ¿Â¼ÔËÐÐ£© ----
 set "GAMEDIR=%~dp0"
 :findgame
 if exist "%GAMEDIR%valheim.exe" goto foundgame
@@ -19,143 +18,174 @@ if "%GAMEDIR:~-2%"=="\\" goto nogame
 for %%i in ("%GAMEDIR:~0,-1%") do set "PARENT=%%~dpi"
 set "GAMEDIR=%PARENT%"
 goto findgame
+:nogame
+echo [´íÎó] Ã»ÕÒµ½ valheim.exe£¬ÇëÈ·ÈÏ±¾½Å±¾·ÅÔÚ Valheim ÓÎÏ·Ä¿Â¼£¨»òÆä×ÓÄ¿Â¼£©ÀïÔÙÔËÐÐ¡£
+pause
+exit /b 1
 :foundgame
 set "CFG=%GAMEDIR%BepInEx\config\SuperVikingDepartment.ValheimSaveShare.cfg"
 if not exist "%CFG%" (
-  echo [é”™è¯¯] æ‰¾ä¸åˆ°é…ç½®æ–‡ä»¶: %CFG%
-  echo è¯·ç¡®è®¤æœ¬è„šæœ¬æ”¾åœ¨ Valheim æ¸¸æˆç›®å½•ï¼ˆæˆ–å…¶å­ç›®å½•ï¼‰é‡Œå†è¿è¡Œã€‚
+  echo [´íÎó] ÕÒ²»µ½ÅäÖÃÎÄ¼þ: %CFG%
+  echo ÇëÈ·ÈÏ±¾½Å±¾·ÅÔÚ Valheim ÓÎÏ·Ä¿Â¼£¨»òÆä×ÓÄ¿Â¼£©ÀïÔÙÔËÐÐ¡£
   pause
   exit /b 1
 )
 
-rem ---- ä»Ž cfg è¯»å–é…ç½® ----
+rem ---- ´Ó cfg ¶ÁÈ¡ÅäÖÃ£¨Token ²»ÔÚÕâÀï£¬¼ûÏÂ·½ token.dat£© ----
 set "REPO="
 set "BRANCH="
-set "TOKEN="
 set "PREFIX=worlds"
 for /f "usebackq tokens=1,* delims==" %%a in ("%CFG%") do (
   set "key=%%a"
-  set "val=%%b"
   if "!key:~0,5!"=="Repo " set "REPO=%%b"
   if "!key:~0,7!"=="Branch " set "BRANCH=%%b"
-  if "!key:~0,6!"=="Token " set "TOKEN=%%b"
   if "!key:~0,11!"=="PathPrefix " set "PREFIX=%%b"
 )
-rem åŽ»æŽ‰å€¼å‰åŽçš„ç©ºæ ¼
+rem È¥µôÖµÇ°ÃæµÄ¿Õ¸ñ£¨cfg ÐÎÈç "Repo = xxx"£©
 :trim_repo
-if "%REPO:~0,1%"==" " set "REPO=%REPO:~1%" & goto trim_repo
+if not defined REPO goto trim_repo_done
+if not "!REPO:~0,1!"==" " goto trim_repo_done
+set "REPO=!REPO:~1!"
+goto trim_repo
+:trim_repo_done
 :trim_branch
-if defined BRANCH if "%BRANCH:~0,1%"==" " set "BRANCH=%BRANCH:~1%" & goto trim_branch
-:trim_token
-if "%TOKEN:~0,1%"==" " set "TOKEN=%TOKEN:~1%" & goto trim_token
+if not defined BRANCH goto trim_branch_done
+if not "!BRANCH:~0,1!"==" " goto trim_branch_done
+set "BRANCH=!BRANCH:~1!"
+goto trim_branch
+:trim_branch_done
 :trim_prefix
-if "%PREFIX:~0,1%"==" " set "PREFIX=%PREFIX:~1%" & goto trim_prefix
+if not defined PREFIX goto trim_prefix_done
+if not "!PREFIX:~0,1!"==" " goto trim_prefix_done
+set "PREFIX=!PREFIX:~1!"
+goto trim_prefix
+:trim_prefix_done
+
+rem ---- ´Ó token.dat ¶ÁÈ¡ Token£¨ÓëÓÎÏ·ÄÚÄ£×éÍ¬Ò»À´Ô´£© ----
+rem ÎÄ¼þÀïº¬ËµÃ÷ÎÄ×Ö£¬Ö»È¡µÚÒ»Ìõ github_pat_ / ghp_ ¿ªÍ·µÄÐÐ£»Get-Content ¶ÁÈ¡Ê±Ë³´ø°þµô UTF-8 BOM¡£
+set "TOKENFILE=%APPDATA%\ValheimSaveShare\token.dat"
+set "TOKEN="
+if exist "%TOKENFILE%" (
+  for /f "usebackq delims=" %%t in (`powershell -NoProfile -Command "$t = $null; foreach ($l in (Get-Content -LiteralPath '%TOKENFILE:\=\\%' -Encoding UTF8 -ErrorAction SilentlyContinue)) { $s = $l.Trim().TrimStart([char]0xFEFF); if ($s.StartsWith('github_pat_') -or $s.StartsWith('ghp_')) { $t = $s; break } }; if ($t) { $t }"`) do set "TOKEN=%%t"
+)
 
 echo ============================================
-echo   Valheim æ‰‹åŠ¨å…±äº«å­˜æ¡£
+echo   Valheim ÊÖ¶¯¹²Ïí´æµµ
 echo ============================================
-echo è¯»å–åˆ°çš„é…ç½®:
-echo   ä»“åº“ Repo   : %REPO%
-echo   åˆ†æ”¯ Branch : %BRANCH% (ç©º=è‡ªåŠ¨ç”¨é»˜è®¤åˆ†æ”¯)
-echo   Token      : å·²è¯»å– (github_pat_ å¼€å¤´: %TOKEN:~0,12%...)
-echo   è·¯å¾„å‰ç¼€    : %PREFIX%
+echo ¶ÁÈ¡µ½µÄÅäÖÃ:
+echo   ²Ö¿â Repo   : %REPO%
+echo   ·ÖÖ§ Branch : %BRANCH% (¿Õ=×Ô¶¯ÓÃÄ¬ÈÏ·ÖÖ§)
+echo   Token      : ÒÑ¶ÁÈ¡ (github_pat_ ¿ªÍ·: %TOKEN:~0,12%...)
+echo   Â·¾¶Ç°×º    : %PREFIX%
 echo.
-if "%REPO%"=="" echo [è­¦å‘Š] cfg é‡Œæ²¡æœ‰é…ç½® Repo
-if "%TOKEN%"=="" echo [è­¦å‘Š] cfg é‡Œæ²¡æœ‰é…ç½® Tokenï¼ˆä¸Šä¼ å¿…éœ€ï¼Œè¯·ç¼–è¾‘ cfg åŽé‡è·‘æœ¬è„šæœ¬ï¼‰
+if "%REPO%"=="" echo [¾¯¸æ] cfg ÀïÃ»ÓÐÅäÖÃ Repo
+if "%TOKEN%"=="" echo [¾¯¸æ] ¶Á²»µ½ Token£¨ÉÏ´«±ØÐè£©: %TOKENFILE%
+if "%TOKEN%"=="" echo         Çë°Ñ github_pat_ ¿ªÍ·µÄ Token Õ³Ìùµ½¸ÃÎÄ¼þ£¨Ê×´ÎÔËÐÐÓÎÏ·»á×Ô¶¯Éú³É´ø½Ì³ÌµÄÄ£°å£©¡£
 if "%REPO%"=="" goto end
 if "%TOKEN%"=="" goto end
 
-rem ---- é€‰æ‹©ä¸–ç•Œæ–‡ä»¶å¤¹ ----
-echo è¯·è¾“å…¥è¦å…±äº«çš„ä¸–ç•Œåç§°ï¼ˆå°±æ˜¯æ¸¸æˆé‡Œæ˜¾ç¤ºçš„ä¸–ç•Œåï¼Œæ”¯æŒä¸­æ–‡ï¼‰ï¼š
-set /p WORLD=ä¸–ç•Œå: 
-if "%WORLD%"=="" echo [é”™è¯¯] ä¸–ç•Œåä¸èƒ½ä¸ºç©º & goto end
+rem ---- Ñ¡ÔñÊÀ½çÎÄ¼þ¼Ð ----
+echo ÇëÊäÈëÒª¹²ÏíµÄÊÀ½çÃû³Æ£¨¾ÍÊÇÓÎÏ·ÀïÏÔÊ¾µÄÊÀ½çÃû£¬Ö§³ÖÖÐÎÄ£©£º
+set /p WORLD=ÊÀ½çÃû: 
+if "%WORLD%"=="" (
+  echo [´íÎó] ÊÀ½çÃû²»ÄÜÎª¿Õ
+  goto end
+)
 
-rem ---- è¯»å–å­˜æ¡£æ–‡ä»¶ï¼ˆæ”¯æŒæœ¬åœ°ä¸Žäº‘åŒæ­¥åˆ°æœ¬åœ°çš„ worlds ç›®å½•ï¼‰ ----
+rem ---- ¶ÁÈ¡´æµµÎÄ¼þ£¨Ö§³Ö±¾µØÓëÔÆÍ¬²½µ½±¾µØµÄ worlds Ä¿Â¼£© ----
 set "SAVEDATA=%USERPROFILE%\AppData\LocalLow\IronGate\Valheim"
 set "WORLDDIR="
 if exist "%SAVEDATA%\worlds_local\%WORLD%" set "WORLDDIR=%SAVEDATA%\worlds_local\%WORLD%"
-if not defined WORLDDIR if exist "%SAVEDATA%\worlds\%WORLD%" set "WORLDDIR=%SAVEDATA%\worlds\%WORLD%"
 if not defined WORLDDIR (
-  echo [é”™è¯¯] åœ¨ä»¥ä¸‹ä½ç½®éƒ½æ²¡æœ‰æ‰¾åˆ°ä¸–ç•Œ "%WORLD%" çš„å­˜æ¡£æ–‡ä»¶å¤¹ï¼š
+  if exist "%SAVEDATA%\worlds\%WORLD%" set "WORLDDIR=%SAVEDATA%\worlds\%WORLD%"
+)
+if not defined WORLDDIR (
+  echo [´íÎó] ÔÚÒÔÏÂÎ»ÖÃ¶¼Ã»ÓÐÕÒµ½ÊÀ½ç "%WORLD%" µÄ´æµµÎÄ¼þ¼Ð£º
   echo   %SAVEDATA%\worlds_local\%WORLD%
   echo   %SAVEDATA%\worlds\%WORLD%
-  echo æ³¨æ„ï¼šå­˜æ¡£æ–‡ä»¶å¤¹é‡Œå¿…é¡»å·²æœ‰å­˜æ¡£æ–‡ä»¶ï¼ˆ_main.*.fwl2 ç­‰ï¼‰ã€‚
-  echo å¯ç”¨ä¸–ç•Œåˆ—è¡¨ï¼ˆworlds_local ä¸‹ï¼‰ï¼š
+  echo ×¢Òâ£º´æµµÎÄ¼þ¼ÐÀï±ØÐëÒÑÓÐ´æµµÎÄ¼þ£¨_main.*.fwl2 µÈ£©¡£
+  echo ¿ÉÓÃÊÀ½çÁÐ±í£¨worlds_local ÏÂ£©£º
   dir /b "%SAVEDATA%\worlds_local" 2>nul
-  echo å¯ç”¨ä¸–ç•Œåˆ—è¡¨ï¼ˆworlds ä¸‹ï¼‰ï¼š
+  echo ¿ÉÓÃÊÀ½çÁÐ±í£¨worlds ÏÂ£©£º
   dir /b "%SAVEDATA%\worlds" 2>nul
   goto end
 )
 echo.
-echo æ‰¾åˆ°å­˜æ¡£æ–‡ä»¶å¤¹: %WORLDDIR%
+echo ÕÒµ½´æµµÎÄ¼þ¼Ð: %WORLDDIR%
 dir /b "%WORLDDIR%"
 echo.
 
-rem ---- ç¡®è®¤å¹¶æ‰“åŒ… ----
-echo å°†æŠŠä¸Šè¿°æ–‡ä»¶æ‰“åŒ…ä¸Šä¼ åˆ° GitHub ä»“åº“ %REPO% çš„ %PREFIX%/%WORLD%/ ç›®å½•ã€‚
-set /p CONFIRM=ç¡®è®¤ä¸Šä¼ ? (y/n): 
-if /i not "%CONFIRM%"=="y" echo å·²å–æ¶ˆã€‚ & goto end
+rem ---- È·ÈÏ²¢´ò°ü ----
+echo ½«°ÑÉÏÊöÎÄ¼þ´ò°üÉÏ´«µ½ GitHub ²Ö¿â %REPO% µÄ %PREFIX%/%WORLD%/ Ä¿Â¼¡£
+set /p CONFIRM=È·ÈÏÉÏ´«? (y/n): 
+if /i not "%CONFIRM%"=="y" (
+  echo ÒÑÈ¡Ïû¡£
+  goto end
+)
 
 set "ZIP=%TEMP%\valheim_share_%RANDOM%.zip"
-echo æ­£åœ¨æ‰“åŒ…...
+echo ÕýÔÚ´ò°ü...
 powershell -NoProfile -Command "Compress-Archive -Path '%WORLDDIR:\=\\%\*' -DestinationPath '%ZIP:\=\\%' -Force"
-if not exist "%ZIP%" echo [é”™è¯¯] æ‰“åŒ…å¤±è´¥ã€‚ & goto end
+if not exist "%ZIP%" (
+  echo [´íÎó] ´ò°üÊ§°Ü¡£
+  goto end
+)
 for %%z in ("%ZIP%") do set "SIZE=%%~zz"
-echo æ‰“åŒ…å®Œæˆ: !SIZE! å­—èŠ‚
+echo ´ò°üÍê³É: !SIZE! ×Ö½Ú
 if !SIZE! GTR 94000000 (
-  echo [é”™è¯¯] æ‰“åŒ…åŽè¶…è¿‡ 90 MBï¼ŒGitHub ä¸æ”¯æŒç›´æŽ¥ä¸Šä¼ è¿™ä¹ˆå¤§çš„æ–‡ä»¶ã€‚
+  echo [´íÎó] ´ò°üºó³¬¹ý 90 MB£¬GitHub ²»Ö§³ÖÖ±½ÓÉÏ´«ÕâÃ´´óµÄÎÄ¼þ¡£
   del "%ZIP%"
   goto end
 )
 
-rem ---- è§£æžåˆ†æ”¯ï¼šæœªé…ç½®åˆ™æŸ¥è¯¢é»˜è®¤åˆ†æ”¯ ----
+rem ---- ½âÎö·ÖÖ§£ºÎ´ÅäÖÃÔò²éÑ¯Ä¬ÈÏ·ÖÖ§ ----
 if "%BRANCH%"=="" (
-  echo æ­£åœ¨æŸ¥è¯¢ä»“åº“é»˜è®¤åˆ†æ”¯...
+  echo ÕýÔÚ²éÑ¯²Ö¿âÄ¬ÈÏ·ÖÖ§...
   curl -s -H "Authorization: Bearer %TOKEN%" -H "User-Agent: ValheimSaveShare" "https://api.github.com/repos/%REPO%" -o "%TEMP%\vs_repo.json"
   powershell -NoProfile -Command "try{ (Get-Content '%TEMP:\=\\%\vs_repo.json' -Raw | ConvertFrom-Json).default_branch | Set-Content -Path '%ZIP:\=\\%.branch' }catch{ 'main' | Set-Content -Path '%ZIP:\=\\%.branch' }"
   set /p BRANCH=<"%ZIP%.branch"
   del "%ZIP%.branch" 2>nul
 )
-echo ç›®æ ‡åˆ†æ”¯: %BRANCH%
+echo Ä¿±ê·ÖÖ§: %BRANCH%
 
-rem ---- ä¸Šä¼  world.zip ----
-echo æ­£åœ¨ä¸Šä¼  world.zipï¼ˆå¤§æ–‡ä»¶å¯èƒ½éœ€è¦å‡ åˆ†é’Ÿï¼Œè¯·å‹¿å…³é—­æœ¬çª—å£ï¼‰...
+rem ---- ÉÏ´« world.zip ----
+echo ÕýÔÚÉÏ´« world.zip£¨´óÎÄ¼þ¿ÉÄÜÐèÒª¼¸·ÖÖÓ£¬ÇëÎð¹Ø±Õ±¾´°¿Ú£©...
 powershell -NoProfile -Command "$c=[IO.File]::ReadAllBytes('%ZIP:\=\\%'); $b=[Convert]::ToBase64String($c); @{message='ValheimSaveShare: update world \"%WORLD%\"';branch='%BRANCH%';content=$b} | ConvertTo-Json -Depth 3 | Set-Content -Path '%ZIP:\=\\%.b64' -Encoding UTF8"
 curl -s -X PUT -H "Authorization: Bearer %TOKEN%" -H "User-Agent: ValheimSaveShare" -H "Content-Type: application/json" --data-binary "@%ZIP%.b64" "https://api.github.com/repos/%REPO%/contents/%PREFIX%/%WORLD%/world.zip" -o "%TEMP%\vs_up.json" -w "HTTP %%{http_code}\n"
 del "%ZIP%.b64" 2>nul
 findstr /c:"commit" "%TEMP%\vs_up.json" >nul 2>&1
 if errorlevel 1 (
-  echo [é”™è¯¯] world.zip ä¸Šä¼ å¤±è´¥ï¼ŒGitHub è¿”å›žï¼š
+  echo [´íÎó] world.zip ÉÏ´«Ê§°Ü£¬GitHub ·µ»Ø£º
   type "%TEMP%\vs_up.json"
   del "%ZIP%" 2>nul
   goto end
 )
-echo world.zip ä¸Šä¼ æˆåŠŸ!
+echo world.zip ÉÏ´«³É¹¦!
 
-rem ---- ä¸Šä¼  manifest.json ----
-echo æ­£åœ¨ä¸Šä¼  manifest.json...
+rem ---- ÉÏ´« manifest.json ----
+echo ÕýÔÚÉÏ´« manifest.json...
 powershell -NoProfile -Command "$files = Get-ChildItem -File '%WORLDDIR:\=\\%' | ForEach-Object { @{path=$_.Name; size=$_.Length} }; $m = @{name='%WORLD%'; gameVersion=''; savedAt=(Get-Date -Format s); tool='ValheimSaveShare manual-upload'; format='zip'; files=$files}; $m | ConvertTo-Json -Depth 3 | Set-Content -Path '%ZIP:\=\\%.manifest' -Encoding UTF8"
 powershell -NoProfile -Command "$b=[Convert]::ToBase64String([IO.File]::ReadAllBytes('%ZIP:\=\\%.manifest')); @{message='ValheimSaveShare: update manifest for \"%WORLD%\"';branch='%BRANCH%';content=$b} | ConvertTo-Json | Set-Content -Path '%ZIP:\=\\%.mreq' -Encoding UTF8"
 curl -s -X PUT -H "Authorization: Bearer %TOKEN%" -H "User-Agent: ValheimSaveShare" -H "Content-Type: application/json" --data-binary "@%ZIP%.mreq" "https://api.github.com/repos/%REPO%/contents/%PREFIX%/%WORLD%/manifest.json" -o "%TEMP%\vs_mf.json" -w "HTTP %%{http_code}\n"
 del "%ZIP%.manifest" 2>nul & del "%ZIP%.mreq" 2>nul & del "%ZIP%" 2>nul
 findstr /c:"commit" "%TEMP%\vs_mf.json" >nul 2>&1
 if errorlevel 1 (
-  echo [è­¦å‘Š] manifest ä¸Šä¼ å¤±è´¥ï¼ˆå­˜æ¡£æœ¬èº«å·²ä¸Šä¼ æˆåŠŸï¼Œä¸å½±å“ä½¿ç”¨ï¼‰ï¼š
+  echo [¾¯¸æ] manifest ÉÏ´«Ê§°Ü£¨´æµµ±¾ÉíÒÑÉÏ´«³É¹¦£¬²»Ó°ÏìÊ¹ÓÃ£©£º
   type "%TEMP%\vs_mf.json"
 ) else (
-  echo manifest.json ä¸Šä¼ æˆåŠŸ!
+  echo manifest.json ÉÏ´«³É¹¦!
 )
 
 echo.
 echo ============================================
-echo   å…±äº«å®Œæˆ!
+echo   ¹²ÏíÍê³É!
 echo ============================================
-echo åˆ†äº«é“¾æŽ¥ï¼ˆå‘ç»™æœ‹å‹ï¼Œåœ¨æ¸¸æˆå†…ã€Œå…±äº«å­˜æ¡£ã€é¡µç­¾ â†’ã€Œæ·»åŠ å…±äº«ã€ç²˜è´´å³å¯ä¸‹è½½ï¼‰:
+echo ·ÖÏíÁ´½Ó£¨·¢¸øÅóÓÑ£¬ÔÚÓÎÏ·ÄÚ¡¸¹²Ïí´æµµ¡¹Ò³Ç© ¡ú¡¸Ìí¼Ó¹²Ïí¡¹Õ³Ìù¼´¿ÉÏÂÔØ£©:
 echo   https://github.com/%REPO%/tree/%BRANCH%/%PREFIX%/%WORLD%
 echo.
 set "LINK=https://github.com/%REPO%/tree/%BRANCH%/%PREFIX%/%WORLD%"
 echo %LINK% | clip
-echo (é“¾æŽ¥å·²å¤åˆ¶åˆ°å‰ªè´´æ¿ï¼ŒCtrl+V ç²˜è´´å³å¯)
+echo (Á´½ÓÒÑ¸´ÖÆµ½¼ôÌù°å£¬Ctrl+V Õ³Ìù¼´¿É)
 echo.
 :end
 pause
